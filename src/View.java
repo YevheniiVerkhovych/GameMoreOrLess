@@ -11,10 +11,10 @@ public class View {
             System.out.println(message);
         }
         public void printArray(Integer[] listOfUserAttempts){
-                String list = "";
+                StringBuilder list = new StringBuilder();
                 this.listOfUserAttempts = listOfUserAttempts;
                 for (Integer attempts : listOfUserAttempts)
-                        if (attempts!= null)    list+=attempts + " ";
+                        if (attempts!= null)    list.append(attempts + " ");
                 System.out.println(list);
         }
 
