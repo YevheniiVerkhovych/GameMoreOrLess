@@ -1,14 +1,16 @@
-import java.util.Scanner;
+import java.util.*;
 
 
-    public class Controller {
+    public class Controller implements RangeValues{
 
-        // Constructor
+        //Variables
         private Model model;
         private View view;
-        private int[] rangeWithRequiredDigit = {1,100};
-        private Integer[] listOfUserAttempts = new Integer[100];
+        private int[] rangeWithRequiredDigit = {minValue-1,maxValue+1};
+        private int attemptNumber = 0;
+        private ArrayList<Integer> listOfUserAttempts = new ArrayList<>();
 
+        // Constructor
 
         public Controller(Model model, View view) {
             this.model  = model;
@@ -16,27 +18,22 @@ import java.util.Scanner;
         }
 
         // The Work method
-        public void processUser(){
 
+        public void processUser(){
 
             Scanner sc = new Scanner(System.in);
 
-            checkUserInput(sc);
+            while (!model.checkUserAnswer(checkUserInput(sc)));
 
             view.printMessage(view.CONGRATULATION + model.getValue());
-
-
         }
 
         // The Utility methods
 
-        public void checkUserInput(Scanner sc) {
+        public int checkUserInput(Scanner sc) {
             int inputDigit;
-            int attemptNumber = 0;
 
             do {
-               do {
-
                    if (attemptNumber != 0) {
                        view.printMessage(View.LIST_OF_PREVOUS_ATTEMPTS);
                        view.printArray(listOfUserAttempts);
@@ -48,20 +45,20 @@ import java.util.Scanner;
                         view.printMessage(View.WRONG_INPUT);
                         sc.next();
                     }
-                  inputDigit = sc.nextInt();
+                    inputDigit = sc.nextInt();
 
                 } while ((inputDigit <= rangeWithRequiredDigit[0]) | (inputDigit >= rangeWithRequiredDigit[1]));
 
-                if (inputDigit < model.getValue()) {rangeWithRequiredDigit[0]=inputDigit;}
-                        else {rangeWithRequiredDigit[1]=inputDigit;}
+                if (inputDigit < model.getValue()) {rangeWithRequiredDigit[0]=inputDigit;
+                } else {
+                    rangeWithRequiredDigit[1]=inputDigit;
+                }
 
-                listOfUserAttempts[attemptNumber] = inputDigit;
+                listOfUserAttempts.add(inputDigit);
 
                 attemptNumber++;
 
-
-            } while (!model.checkUserAnswer(inputDigit));
-
+            return inputDigit;
         }
 
 

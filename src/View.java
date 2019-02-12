@@ -1,5 +1,6 @@
+import java.util.ArrayList;
+
 public class View {
-        Integer[] listOfUserAttempts;
 
         // Text's constants
         public static final String INPUT_RANGE = "Please, input digit between next values ";
@@ -7,14 +8,19 @@ public class View {
         public static final String CONGRATULATION = "You have guessed the digit!!! Yes, it was: ";
         public static final String WRONG_INPUT = "Wrong input! Try again.";
 
+       //Methods
+
         public void printMessage(String message){
             System.out.println(message);
         }
-        public void printArray(Integer[] listOfUserAttempts){
+
+        public void printArray(ArrayList<Integer> listOfUserAttempts){
                 StringBuilder list = new StringBuilder();
-                this.listOfUserAttempts = listOfUserAttempts;
-                for (Integer attempts : listOfUserAttempts)
-                        if (attempts!= null)    list.append(attempts + " ");
+
+                for (Integer number : listOfUserAttempts) {
+                        list.append(number.toString() + " ");
+                }
+
                 System.out.println(list);
         }
 

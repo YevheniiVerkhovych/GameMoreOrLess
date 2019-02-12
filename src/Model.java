@@ -1,10 +1,10 @@
 import java.util.Random;
 
-public class Model {
+public class Model implements RangeValues {
 
     Random rand = new Random();
 
-    private int digitToFind = rand.nextInt(100) + 1;
+    private int digitToFind = rand.nextInt(maxValue)+minValue;
     int userInputValue;
 
 
