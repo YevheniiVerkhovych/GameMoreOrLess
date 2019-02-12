@@ -47,7 +47,7 @@ import java.util.*;
                     }
                     inputDigit = sc.nextInt();
 
-                } while ((inputDigit <= rangeWithRequiredDigit[0]) | (inputDigit >= rangeWithRequiredDigit[1]));
+                } while (!((inputDigit > rangeWithRequiredDigit[0]) && (inputDigit < rangeWithRequiredDigit[1])));
 
                 if (inputDigit < model.getValue()) {rangeWithRequiredDigit[0]=inputDigit;
                 } else {
