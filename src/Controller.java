@@ -1,14 +1,11 @@
 import java.util.*;
 
 
-    public class Controller implements RangeValues{
+    public class Controller {
 
         //Variables
         private Model model;
         private View view;
-        private int[] rangeWithRequiredDigit = {minValue-1,maxValue+1};
-        private int attemptNumber = 0;
-        private ArrayList<Integer> listOfUserAttempts = new ArrayList<>();
 
         // Constructor
 
@@ -23,23 +20,58 @@ import java.util.*;
 
             Scanner sc = new Scanner(System.in);
 
+            setInitialBorders(sc);
+
+            model.setSecretDigit();
+
             while (!model.checkUserAnswer(checkUserInput(sc)));
 
-            view.printMessage(view.CONGRATULATION + model.getValue());
+            view.printMessage(View.LIST_OF_PREVOUS_ATTEMPTS);
+
+            view.printArray(model.getListOfUserAttempts());
+
+            view.printMessage(view.CONGRATULATION + model.getValueOfSecretDigit());
         }
 
         // The Utility methods
 
+        public void setInitialBorders(Scanner sc) {
+            Integer inputDigit = null;
+            view.printMessage(View.SET_RANGE_BOTTOM);
+
+                while (!sc.hasNextInt()) {
+                    view.printMessage(View.WRONG_INPUT);
+                    sc.next();
+                }
+
+                model.setMinValue(sc.nextInt());
+                view.printMessage(View.SET_RANGE_TOP);
+
+                do {
+                    if (inputDigit!=null)
+                        view.printMessage(View.WRONG_INPUT);
+
+
+                    while (!sc.hasNextInt()) {
+                        view.printMessage(View.WRONG_INPUT);
+                        sc.next();
+                    }
+                    inputDigit = sc.nextInt();
+                }
+                while (inputDigit - 2 < model.getMinValue());
+
+                model.setMaxValue(inputDigit);
+        }
+
+
         public int checkUserInput(Scanner sc) {
-            int inputDigit;
+            Integer inputDigit=null;
 
             do {
-                   if (attemptNumber != 0) {
-                       view.printMessage(View.LIST_OF_PREVOUS_ATTEMPTS);
-                       view.printArray(listOfUserAttempts);
-                   }
+                if (inputDigit!=null)
+                    view.printMessage(View.WRONG_INPUT);
 
-                   view.printMessage(View.INPUT_RANGE + rangeWithRequiredDigit[0] + " - " + rangeWithRequiredDigit[1] + " : ");
+                    view.printMessage(View.INPUT_RANGE + model.getMinValue() + " to " + model.getMaxValue() + " : ");
 
                     while (!sc.hasNextInt()) {
                         view.printMessage(View.WRONG_INPUT);
@@ -47,21 +79,15 @@ import java.util.*;
                     }
                     inputDigit = sc.nextInt();
 
-                } while (!((inputDigit > rangeWithRequiredDigit[0]) && (inputDigit < rangeWithRequiredDigit[1])));
+                } while (!((inputDigit > model.getMinValue()) && (inputDigit < model.getMaxValue())));
 
-                if (inputDigit < model.getValue()) {rangeWithRequiredDigit[0]=inputDigit;
+                if (inputDigit < model.getValueOfSecretDigit()) {model.setMinValue(inputDigit);
                 } else {
-                    rangeWithRequiredDigit[1]=inputDigit;
+                    model.setMinValue(inputDigit);
                 }
-
-                listOfUserAttempts.add(inputDigit);
-
-                attemptNumber++;
 
             return inputDigit;
         }
-
-
 
     }
 
